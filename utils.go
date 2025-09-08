@@ -124,5 +124,31 @@ func EditTodo(indexToEdit string) {
 	if err != nil {
 		panic(err)
 	}
+}
 
+func DeleteTodo(strIndexToDelete string) {
+	strIndexToDelete = strings.ReplaceAll(strIndexToDelete, "\n", "")
+	if strIndexToDelete == "*" {
+		fmt.Println("Deleting everthing!!")
+	} else {
+		strInt, err := strconv.Atoi(strIndexToDelete)
+		if err != nil {
+			panic(err)
+		}
+		todos := getCurrentItems(fileName)
+		if strInt-1 > len(todos)-1 {
+			panic("Chosen number greater than number of items in the list")
+		}
+		todoItem := todos[strInt-1]
+
+		var intermediate []TodoItem
+		intermediate = todos[:strInt-1]
+		intermediate = append(intermediate, todos[strInt:]...)
+		fmt.Println(intermediate)
+		err = WriteToFile(fileName, DataToWrite{ArrayOfItems: intermediate})
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Todo deleted successfully: ", todoItem)
+	}
 }

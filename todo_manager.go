@@ -38,7 +38,7 @@ func processInput(input string) {
 	}
 	switch intValue {
 	case 1:
-		fmt.Println("Add todo")
+		fmt.Println("\n***** Add todo *****")
 		todo := ReadFromCli("Type in your todo to add:\n")
 		Add(fileName, todo)
 		fmt.Println("\nTodo added successfully")
@@ -49,11 +49,15 @@ func processInput(input string) {
 		fmt.Println("Editing number ", chosenTodo)
 		EditTodo(chosenTodo)
 	case 3:
-		fmt.Println("Delete todo")
+		fmt.Println("D\n***** Delete todo *****")
+		ViewTodos()
+		chosenTodo := ReadFromCli("\nEnter the number of the todo to delete (enter * to delete everything):")
+		DeleteTodo(chosenTodo)
 	case 4:
 		fmt.Println("\n***** View all todos *****")
 		ViewTodos()
 	default:
-		fmt.Println("I dunno what you wanna do hommie")
+		fmt.Println("\nI dunno what you wanna do hommie\nBut here're all the current todos:\n")
+		ViewTodos()
 	}
 }
