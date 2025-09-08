@@ -116,18 +116,13 @@ func EditTodo(indexToEdit string) {
 		Title: strings.ReplaceAll(editedTodo, "\n", ""),
 	}
 	var intermediate []TodoItem
-	// for i, item := range todos {
-	// 	if i == strInt-1 {
-	// 		intermediate = append(intermediate, editedTodoItem)
-	// 	} else {
-	// 		intermediate = append(intermediate, item)
-	// 	}
-	// }
 	intermediate = todos[:strInt-1]
 	intermediate = append(intermediate, editedTodoItem)
 	intermediate = append(intermediate, todos[strInt:]...)
 	fmt.Println(intermediate)
 	err = WriteToFile(fileName, DataToWrite{ArrayOfItems: intermediate})
-	fmt.Println("Err re-writing: ", err)
+	if err != nil {
+		panic(err)
+	}
 
 }

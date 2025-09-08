@@ -39,7 +39,7 @@ func processInput(input string) {
 	switch intValue {
 	case 1:
 		fmt.Println("Add todo")
-		todo := ReadFromCli("Type in your todo to add")
+		todo := ReadFromCli("Type in your todo to add:\n")
 		Add(fileName, todo)
 		fmt.Println("\nTodo added successfully")
 	case 2:
