@@ -1,0 +1,133 @@
+package main
+
+import (
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func Add(fileName, todo string) {
+	newTodo := TodoItem{
+		Title: strings.ReplaceAll(todo, "\n", ""),
+	}
+	WriteToFile(fileName, DataToWrite{SingleItem: newTodo})
+}
+
+func ViewTodos() {
+	allTodos := getCurrentItems(fileName)
+	for i, todo := range allTodos {
+		fmt.Printf("%d: %s\n", i+1, todo.Title)
+	}
+}
+
+func ReadFromCli(prompt string) string {
+	fmt.Println(prompt)
+	reader := bufio.NewReader(os.Stdin)
+	line, _ := reader.ReadString('\n')
+	return line
+}
+
+func CreateFile(fileName string) (*os.File, error) {
+	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
+}
+
+func checkFileExists(fileName string) bool {
+	var fileExists = false
+	_, err := os.Stat(fileName)
+	if err == nil {
+		fileExists = true
+	}
+	return fileExists
+}
+
+func OpenFile(fileName string) (*os.File, error) {
+	fileExists := checkFileExists(fileName)
+	var file *os.File
+	var err error
+	if fileExists {
+		file, err = os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0644)
+	} else {
+		file, err = CreateFile(fileName)
+	}
+	return file, err
+
+}
+
+func WriteToFile(fileName string, itemToWrite DataToWrite) error {
+	currentTodos := getCurrentItems(fileName)
+	if itemToWrite.SingleItem.Title != "" {
+		currentTodos = append(currentTodos, itemToWrite.SingleItem)
+	} else {
+		currentTodos = itemToWrite.ArrayOfItems
+	}
+	file, errorToReturn := OpenFile(fileName)
+
+	if file != nil {
+		defer file.Close()
+		data, err := json.MarshalIndent(currentTodos, "", " ")
+		if err != nil {
+			return err
+		} else {
+			_, errorToReturn = file.Write(data)
+			if errorToReturn != nil {
+				return errorToReturn
+			}
+		}
+	}
+
+	return errorToReturn
+}
+
+func getCurrentItems(fileName string) []TodoItem {
+	var todos []TodoItem
+	file, err := os.Open(fileName)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	if err := json.NewDecoder(file).Decode(&todos); err != nil {
+		if err.Error() != "EOF" {
+			panic(err)
+		}
+	}
+
+	return todos
+}
+
+func EditTodo(indexToEdit string) {
+	strInt, err := strconv.Atoi(strings.ReplaceAll(indexToEdit, "\n", ""))
+	if err != nil {
+		panic(err)
+	}
+	todos := getCurrentItems(fileName)
+	if strInt-1 > len(todos)-1 {
+		panic("Chosen number greater than number of items in the list")
+	}
+	todoItem := todos[strInt-1]
+	editedTodo := ReadFromCli("Enter the new todo in place of: " + todoItem.Title)
+	editedTodoItem := TodoItem{
+		Title: strings.ReplaceAll(editedTodo, "\n", ""),
+	}
+	var intermediate []TodoItem
+	// for i, item := range todos {
+	// 	if i == strInt-1 {
+	// 		intermediate = append(intermediate, editedTodoItem)
+	// 	} else {
+	// 		intermediate = append(intermediate, item)
+	// 	}
+	// }
+	intermediate = todos[:strInt-1]
+	intermediate = append(intermediate, editedTodoItem)
+	intermediate = append(intermediate, todos[strInt:]...)
+	fmt.Println(intermediate)
+	err = WriteToFile(fileName, DataToWrite{ArrayOfItems: intermediate})
+	fmt.Println("Err re-writing: ", err)
+
+}
