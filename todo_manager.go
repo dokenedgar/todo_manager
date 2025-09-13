@@ -16,6 +16,12 @@ type TodoItem struct {
 
 var fileName = "todos.json"
 
+// FIXME: the func 'main' of the 'main' pkg should stay in a main.go file
+// FIXME: address all the warnings the staticcheck, or go vet is giving to you.
+// FIXME: if I type "5" I want to stay in the loop. Until I type a valid input.
+// Every time the user failed to input, share a message with the valid inputs.
+// TODO: I want to be able to perform more than an operation. Provide me with the "Exit" option for when I want to exit.
+// TODO: the files should be organized in a better way. Use the `cmd` and `internal` folders.
 func main() {
 	input := ReadFromCli(`
 	What do you want to do? Type only a number: 
@@ -57,6 +63,7 @@ func processInput(input string) {
 		fmt.Println("\n***** View all todos *****")
 		ViewTodos()
 	default:
+		// FIXME: '\n' at the end is redundant
 		fmt.Println("\nI dunno what you wanna do hommie\nBut here're all the current todos:\n")
 		ViewTodos()
 	}
