@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+// TODO: Why don't we load the file content in a slice on the program startup?
+// Then, we can change stuff in the slice. Upon completion of the program, we can persist the change in the file.
+
 func Add(fileName, todo string) {
 	newTodo := TodoItem{
 		Title: strings.ReplaceAll(todo, "\n", ""),
@@ -26,12 +29,13 @@ func ViewTodos() {
 func ReadFromCli(prompt string) string {
 	fmt.Println(prompt)
 	reader := bufio.NewReader(os.Stdin)
+	// FIXME: always check for errors.
 	line, _ := reader.ReadString('\n')
 	return line
 }
 
 func CreateFile(fileName string) (*os.File, error) {
-	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +43,7 @@ func CreateFile(fileName string) (*os.File, error) {
 }
 
 func checkFileExists(fileName string) bool {
-	var fileExists = false
+	fileExists := false
 	_, err := os.Stat(fileName)
 	if err == nil {
 		fileExists = true
@@ -52,12 +56,11 @@ func OpenFile(fileName string) (*os.File, error) {
 	var file *os.File
 	var err error
 	if fileExists {
-		file, err = os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0644)
+		file, err = os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0o644)
 	} else {
 		file, err = CreateFile(fileName)
 	}
 	return file, err
-
 }
 
 func WriteToFile(fileName string, itemToWrite DataToWrite) error {
