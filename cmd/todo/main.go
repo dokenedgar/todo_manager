@@ -1,7 +1,8 @@
 package main
+import "todo_manager/internal/todo"
 
 func main() {
-	input := ReadFromCli(`
+	input := todo.ReadFromCli(`
 	What do you want to do? Type only a number: 
 
 	1 Add todo
@@ -11,5 +12,5 @@ func main() {
 	
 	`)
 
-	processInput(input)
+	todo.ProcessInput(input)
 }

@@ -1,4 +1,4 @@
-package main
+package todo
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ var fileName = "todos.json"
 // TODO: I want to be able to perform more than an operation. Provide me with the "Exit" option for when I want to exit.
 // TODO: the files should be organized in a better way. Use the `cmd` and `internal` folders.
 
-func processInput(input string) {
+func ProcessInput(input string) {
 	intValue, err := strconv.Atoi(strings.ReplaceAll(input, "\n", ""))
 	if err != nil {
 		fmt.Println("Error occurred while parsing input: ", err)
