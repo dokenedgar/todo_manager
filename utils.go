@@ -22,6 +22,9 @@ func Add(fileName, todo string) {
 func ViewTodos() {
 	allTodos := getCurrentItems(fileName)
 	for i, todo := range allTodos {
+		if i == 0 {
+			fmt.Println("")
+		}
 		fmt.Printf("%d: %s\n", i+1, todo.Title)
 	}
 }
