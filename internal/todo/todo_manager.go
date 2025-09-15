@@ -19,7 +19,6 @@ var fileName = "todos.json"
 // FIXME: if I type "5" I want to stay in the loop. Until I type a valid input.
 // Every time the user failed to input, share a message with the valid inputs.
 // TODO: I want to be able to perform more than an operation. Provide me with the "Exit" option for when I want to exit.
-// TODO: the files should be organized in a better way. Use the `cmd` and `internal` folders.
 
 func ProcessInput(input string) {
 	intValue, err := strconv.Atoi(strings.ReplaceAll(input, "\n", ""))
