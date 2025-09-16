@@ -109,24 +109,19 @@ func EditTodo(indexToEdit string) {
 	if err != nil {
 		panic(err)
 	}
-	todos := getCurrentItems(fileName)
-	if strInt-1 > len(todos)-1 {
+	if strInt-1 > len(allTodos)-1 {
 		panic("Chosen number greater than number of items in the list")
 	}
-	todoItem := todos[strInt-1]
+	todoItem := allTodos[strInt-1]
 	editedTodo := ReadFromCli("Enter the new todo in place of: " + todoItem.Title)
 	editedTodoItem := TodoItem{
 		Title: strings.ReplaceAll(editedTodo, "\n", ""),
 	}
 	var intermediate []TodoItem
-	intermediate = todos[:strInt-1]
+	intermediate = allTodos[:strInt-1]
 	intermediate = append(intermediate, editedTodoItem)
-	intermediate = append(intermediate, todos[strInt:]...)
-	fmt.Println(intermediate)
-	err = WriteToFile(fileName)
-	if err != nil {
-		panic(err)
-	}
+	intermediate = append(intermediate, allTodos[strInt:]...)
+	allTodos = intermediate
 }
 
 func DeleteTodo(strIndexToDelete string) {
