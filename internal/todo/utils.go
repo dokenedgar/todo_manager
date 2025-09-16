@@ -133,20 +133,16 @@ func DeleteTodo(strIndexToDelete string) {
 		if err != nil {
 			panic(err)
 		}
-		todos := getCurrentItems(fileName)
-		if strInt-1 > len(todos)-1 {
+		if strInt-1 > len(allTodos)-1 {
 			panic("Chosen number greater than number of items in the list")
 		}
-		todoItem := todos[strInt-1]
+		todoItem := allTodos[strInt-1]
 
 		var intermediate []TodoItem
-		intermediate = todos[:strInt-1]
-		intermediate = append(intermediate, todos[strInt:]...)
+		intermediate = allTodos[:strInt-1]
+		intermediate = append(intermediate, allTodos[strInt:]...)
 		fmt.Println(intermediate)
-		err = WriteToFile(fileName)
-		if err != nil {
-			panic(err)
-		}
+		allTodos = intermediate
 		fmt.Println("Todo deleted successfully: ", todoItem)
 	}
 }
