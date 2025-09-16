@@ -39,11 +39,7 @@ func ReadFromCli(prompt string) string {
 }
 
 func CreateFile(fileName string) (*os.File, error) {
-	file, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0o644)
-	if err != nil {
-		return nil, err
-	}
-	return file, nil
+	return os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY, 0o644)
 }
 
 func checkFileExists(fileName string) bool {
