@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-// TODO: Why don't we load the file content in a slice on the program startup?
-// Then, we can change stuff in the slice. Upon completion of the program, we can persist the change in the file.
 
 func Add(todo string) {
 	newTodo := TodoItem{
