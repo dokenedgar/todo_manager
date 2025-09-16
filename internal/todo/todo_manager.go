@@ -15,6 +15,7 @@ type TodoItem struct {
 }
 
 var fileName = "todos.json"
+var allTodos []TodoItem
 
 // FIXME: if I type "5" I want to stay in the loop. Until I type a valid input.
 // Every time the user failed to input, share a message with the valid inputs.
@@ -30,7 +31,7 @@ func ProcessInput(input string) {
 	case 1:
 		fmt.Println("\n***** Add todo *****")
 		todo := ReadFromCli("Type in your todo to add:\n")
-		Add(fileName, todo)
+		Add(todo)
 		fmt.Println("\nTodo added successfully")
 	case 2:
 		fmt.Println("\n***** Edit todo *****")

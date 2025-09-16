@@ -12,15 +12,18 @@ import (
 // TODO: Why don't we load the file content in a slice on the program startup?
 // Then, we can change stuff in the slice. Upon completion of the program, we can persist the change in the file.
 
-func Add(fileName, todo string) {
+func Add(todo string) {
 	newTodo := TodoItem{
 		Title: strings.ReplaceAll(todo, "\n", ""),
 	}
-	WriteToFile(fileName, DataToWrite{SingleItem: newTodo})
+	allTodos = append(allTodos, newTodo)
 }
 
 func ViewTodos() {
-	allTodos := getCurrentItems(fileName)
+	if allTodos == nil {
+		fmt.Println("Loading todos...")
+		allTodos = getCurrentItems(fileName)
+	}
 	for i, todo := range allTodos {
 		if i == 0 {
 			fmt.Println("")
@@ -66,18 +69,12 @@ func OpenFile(fileName string) (*os.File, error) {
 	return file, err
 }
 
-func WriteToFile(fileName string, itemToWrite DataToWrite) error {
-	currentTodos := getCurrentItems(fileName)
-	if itemToWrite.SingleItem.Title != "" {
-		currentTodos = append(currentTodos, itemToWrite.SingleItem)
-	} else {
-		currentTodos = itemToWrite.ArrayOfItems
-	}
+func WriteToFile(fileName string) error {
 	file, errorToReturn := OpenFile(fileName)
 
 	if file != nil {
 		defer file.Close()
-		data, err := json.MarshalIndent(currentTodos, "", " ")
+		data, err := json.MarshalIndent(allTodos, "", " ")
 		if err != nil {
 			return err
 		} else {
@@ -126,7 +123,7 @@ func EditTodo(indexToEdit string) {
 	intermediate = append(intermediate, editedTodoItem)
 	intermediate = append(intermediate, todos[strInt:]...)
 	fmt.Println(intermediate)
-	err = WriteToFile(fileName, DataToWrite{ArrayOfItems: intermediate})
+	err = WriteToFile(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -151,10 +148,19 @@ func DeleteTodo(strIndexToDelete string) {
 		intermediate = todos[:strInt-1]
 		intermediate = append(intermediate, todos[strInt:]...)
 		fmt.Println(intermediate)
-		err = WriteToFile(fileName, DataToWrite{ArrayOfItems: intermediate})
+		err = WriteToFile(fileName)
 		if err != nil {
 			panic(err)
 		}
 		fmt.Println("Todo deleted successfully: ", todoItem)
 	}
+}
+
+func LoadTodo() {
+	allTodos = getCurrentItems(fileName)
+}
+
+func SaveChangesToFile() {
+	fmt.Println("Final save called")
+	WriteToFile(fileName)
 }

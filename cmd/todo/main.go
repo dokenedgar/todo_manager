@@ -1,7 +1,12 @@
 package main
-import "todo_manager/internal/todo"
+
+import (
+	"todo_manager/internal/todo"
+)
 
 func main() {
+	todo.LoadTodo()
+	defer todo.SaveChangesToFile()
 	input := todo.ReadFromCli(`
 	What do you want to do? Type only a number: 
 
