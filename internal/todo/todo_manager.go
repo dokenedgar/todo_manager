@@ -17,9 +17,9 @@ type TodoItem struct {
 var fileName = "todos.json"
 var allTodos []TodoItem
 
-// TODO: I want to be able to perform more than an operation. Provide me with the "Exit" option for when I want to exit.
 
-func ProcessInput(input int) {
+func ProcessInput(input int) bool {
+	exit := false
 	switch input {
 	case 1:
 		fmt.Println("\n***** Add todo *****")
@@ -40,7 +40,11 @@ func ProcessInput(input int) {
 	case 4:
 		fmt.Println("\n***** View all todos *****")
 		ViewTodos()
+	case 5:
+		fmt.Println("\n***** Goodbye! *****")
+		exit = true
 	}
+	return exit
 }
 
 func ParseInput(input string) int {
@@ -59,6 +63,7 @@ func InitialMenuPrompt(initialPrompt bool) string {
 	2 Edit todo
 	3 Delete todo
 	4 View all todos
+	5 Exit
 	
 	`
 	if !initialPrompt {
@@ -71,6 +76,7 @@ func InitialMenuPrompt(initialPrompt bool) string {
 	2 Edit todo
 	3 Delete todo
 	4 View all todos
+	5 Exit
 	
 	`
 	}
