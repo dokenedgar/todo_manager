@@ -10,6 +10,7 @@ This project is a CLI app for managing a list of todo items, stored in a file.
     - [Edit todo](#edit-todo)
     - [Delete todo](#delete-todo)
     - [View all todos](#view-all-todos)
+    - [Exit](#exit)
 
 ## Installation
 
@@ -18,21 +19,22 @@ Clone the repo via
 ```bash
 git clone https://github.com/dokenedgar/todo_manager.git
 cd todo_manager
-go run .
+go run ./cmd/todo
 ```
 
 ## Introduction
 
-Running the project, you get presented with 4 options (menu):
+Running the project, you get presented with 5 options (menu):
 
 <!-- no toc -->
 1. [Add todo](#add-todo)
 2. [Edit todo](#edit-todo)
 3. [Delete todo](#delete-todo)
 4. [View all todos](#view-all-todos)
+5. [Exit](#exit)
 <!-- no toc -->
 
-and also a prompt to respond with the number of the action to perform.
+and also a prompt to respond with the number of the action to perform. This action (presenting the menu) is autmatically repeated and looped through, unti you choose to exit the program by selecting the 5 option, `Exit`
 
 ## Features
 
@@ -61,3 +63,7 @@ The only difference is that here, the todo at the specified index gets deleted.
 ### View all todos
 
 This will print all the todos present in the todos file, on the terminal.
+
+### Exit
+
+This terminates the program
