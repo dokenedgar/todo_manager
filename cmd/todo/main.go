@@ -7,15 +7,12 @@ import (
 func main() {
 	todo.LoadTodo()
 	defer todo.SaveChangesToFile()
-	input := todo.ReadFromCli(`
-	What do you want to do? Type only a number: 
+	input := todo.ReadFromCli(todo.InitialMenuPrompt(true))
+	parsedInput := todo.ParseInput(input)
+	for parsedInput > 4 || parsedInput <= 0 {
+		input = todo.ReadFromCli(todo.InitialMenuPrompt(false))
+		parsedInput = todo.ParseInput(input)
+	}
 
-	1 Add todo
-	2 Edit todo
-	3 Delete todo
-	4 View all todos
-	
-	`)
-
-	todo.ProcessInput(input)
+	todo.ProcessInput(parsedInput)
 }
