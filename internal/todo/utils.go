@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-
 func Add(todo string) {
 	newTodo := TodoItem{
 		Title: strings.ReplaceAll(todo, "\n", ""),
@@ -33,8 +32,13 @@ func ViewTodos() {
 func ReadFromCli(prompt string) string {
 	fmt.Println(prompt)
 	reader := bufio.NewReader(os.Stdin)
-	// FIXME: always check for errors.
-	line, _ := reader.ReadString('\n')
+	line, err := reader.ReadString('\n')
+	for err != nil {
+		fmt.Printf("\nError occurred while reading input %s.\nPlease enter the value again", err.Error())
+		fmt.Println(prompt)
+		line, err = reader.ReadString('\n')
+	}
+
 	return line
 }
 

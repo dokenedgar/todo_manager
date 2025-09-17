@@ -16,5 +16,6 @@ func main() {
 			parsedInput = todo.ParseInput(input)
 		}
 		exit = todo.ProcessInput(parsedInput)
+		todo.SaveChangesToFile()
 	}
 }
