@@ -6,17 +6,12 @@ import (
 	"strings"
 )
 
-type DataToWrite struct {
-	SingleItem   TodoItem   `json:"single_item"`
-	ArrayOfItems []TodoItem `json:"array_items"`
-}
 type TodoItem struct {
 	Title string `json:"title"`
 }
 
 var fileName = "todos.json"
 var allTodos []TodoItem
-
 
 func ProcessInput(input int) bool {
 	exit := false
