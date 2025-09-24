@@ -9,11 +9,12 @@ import (
 	"strings"
 )
 
-// TODO: Why don't we load the file content in a slice on the program startup?
-// Then, we can change stuff in the slice. Upon completion of the program, we can persist the change in the file.
+// FIXME: this can be part of the "store" folder. The name can be "store/todo.go"
 
-var fileName = "todos.json"
-var allTodos []TodoItem
+var (
+	fileName = "todos.json"
+	allTodos []TodoItem
+)
 
 func Add(todo string) {
 	newTodo := TodoItem{
@@ -40,6 +41,7 @@ func ReadFromCli(prompt string) string {
 	reader := bufio.NewReader(os.Stdin)
 	// FIXME: always check for errors.
 	line, err := reader.ReadString('\n')
+	// FIXME: this check is not idiomatic. Check err with 'if', not 'for'.
 	for err != nil {
 		fmt.Printf("\nError occurred while reading input %s.\nPlease enter the value again", err.Error())
 		fmt.Println(prompt)
@@ -70,8 +72,13 @@ func OpenFile(fileName string) (*os.File, error) {
 }
 
 func WriteToFile(fileName string) error {
+	// FIXME: you should add a parameter for the data to add to the file.
+	// Or you can change the name of the function by making this explicit.
+	// TODO: the error handling is wrong. Always check for error and act immediately.
 	file, errorToReturn := OpenFile(fileName)
 
+	// FIXME: this check is useless because if we're here it means we have a valid file handle.
+	// No errors happened.
 	if file != nil {
 		defer file.Close()
 		data, err := json.MarshalIndent(allTodos, "", " ")
@@ -90,6 +97,7 @@ func getCurrentItems(fileName string) []TodoItem {
 	var todos []TodoItem
 	file, err := os.Open(fileName)
 	if err != nil {
+		// FIXME: we should not panic from a logic function. Check everywhere.
 		panic(err)
 	}
 	defer file.Close()
