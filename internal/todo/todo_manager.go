@@ -10,14 +10,8 @@ type TodoItem struct {
 	Title string `json:"title"`
 }
 
-
-
-// FIXME: the func 'main' of the 'main' pkg should stay in a main.go file
-// FIXME: address all the warnings the staticcheck, or go vet is giving to you.
-// FIXME: if I type "5" I want to stay in the loop. Until I type a valid input.
-// Every time the user failed to input, share a message with the valid inputs.
-// TODO: I want to be able to perform more than an operation. Provide me with the "Exit" option for when I want to exit.
-// TODO: the files should be organized in a better way. Use the `cmd` and `internal` folders.
+// FIXME: all the exported functions must have a comment. See warning ST1000.
+// FIXME: this file can be renamed as "manager.go". "todo_manager" is redundant with the pkg name (and folder name).
 
 func ProcessInput(input int) bool {
 	exit := false
@@ -39,6 +33,7 @@ func ProcessInput(input int) bool {
 	case 5:
 		fmt.Println("\n***** Goodbye! *****")
 		exit = true
+	// BUG: this default is useless since if we're here it means we have an input ranging from 1 to 5.
 	default: // This may not be needed, as it won't ever be called based on the current code in main.go
 		// FIXME: '\n' at the end is redundant
 		fmt.Println("\nI dunno what you wanna do hommie\nBut here're all the current todos:")

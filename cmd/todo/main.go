@@ -4,6 +4,9 @@ import (
 	"todo_manager/internal/todo"
 )
 
+// FIXME: when I type "5" to exit, it will display "Final save called" two times.
+// FIXME: 'todos.json' should not be added to Git.
+
 func main() {
 	todo.LoadTodo()
 	defer todo.SaveChangesToFile()
